@@ -15,57 +15,12 @@ MongoClient.connect(
 
     const db = client.db(dbName);
 
-    // db.collection("users")
-    //   .updateOne(
-    //     {
-    //       _id: ObjectId("5d220fedd43d0c4a5080940d")
-    //     },
-    //     {
-    //       $set: {
-    //         name: "Dickhead"
-    //       }
-    //     }
-    //   )
-    //   .then(result => {
-    //     console.log(result);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-
-    // db.collection("users")
-    //   .updateOne(
-    //     {
-    //       _id: ObjectId("5d220fedd43d0c4a5080940d")
-    //     },
-    //     {
-    //       $inc: {
-    //         age: 1
-    //       }
-    //     }
-    //   )
-    //   .then(result => {
-    //     console.log(result);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-    db.collection("tasks")
-      .updateMany(
-        {
-          completed: true
-        },
-        {
-          $set: {
-            completed: false
-          }
-        }
-      )
-      .then(result => {
-        console.log(result);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    db.collection('users').deleteOne({
+      age: 99
+    }).then((result) => {
+      console.log(result);
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 );
