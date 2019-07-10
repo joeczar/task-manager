@@ -15,8 +15,8 @@ MongoClient.connect(
 
     const db = client.db(dbName);
 
-    db.collection('users').deleteOne({
-      age: 99
+    db.collection('tasks').deleteOne({
+      _id: new ObjectId("5d2213b5f164ce262470f921")
     }).then((result) => {
       console.log(result);
     }).catch((error) => {
