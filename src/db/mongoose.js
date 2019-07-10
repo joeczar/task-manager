@@ -1,5 +1,6 @@
 /*jshint esversion: 6 */
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
   useNewUrlParser: true,
@@ -8,17 +9,49 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
 
 const User = mongoose.model('User', {
   name: {
-    type: String
+    type: String,
+    required: true,
+    trim: true
+  },
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+    lowercase: true,
+    validate(value) {
+      if (!validator.isEmail(value)) {
+        throw new Error('Email is invalid');
+      }
+    }
+  },
+  password: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 7,
+    validate(value) {
+      if (value.toLowerCase.includes("password")) {
+        throw new Error('That is a bad password.');
+      }
+    }
+    
   },
   age: {
-    type: Number
+    type: Number,
+    default: 0,
+    validate(value) {
+      if (value < 0) {
+        throw new Error('Age must be a positive number');
+      }
+    }
   }
 });
 
-// const me = new User({
-//   name: "Joe",
-//   age: 38
-// });
+const me = new User({
+  name: "Niceyy",
+  email: 'nicey@better.Com',
+  password: "NiceyNice"
+});
 
 // me.save().then(() => {
 //   console.log(me);
@@ -26,21 +59,24 @@ const User = mongoose.model('User', {
 //   console.log( 'Error!', error);
 // });
 
-const task = mongoose.model('Task', {
-  task: {
-    type: String
+const Task = mongoose.model('Task', {
+  description: {
+    type: String,
+    required: true,
+    trim: true
   }, completed: {
-    type: Boolean
+    type: Boolean,
+    default: false
   }
 });
 
-const dishwasher = new task({
-  task: "Unload and load the dishwasher",
-  completed: false
+const task = new Task({
+  description: "Unload and load the task",
+  
 });
 
-dishwasher.save().then(() => {
-  console.log(dishwasher);
+task.save().then(() => {
+  console.log(task);
 }).catch((error) => {
   console.log(error);
 });
