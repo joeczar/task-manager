@@ -12,7 +12,7 @@ const Task = require('../src/models/Task');
 // });
 
 const deleteTaskAndCount = async (id) => {
-  const taskToDelete = await Task.findByIdAndDelete(id);
+  const task = await Task.findByIdAndDelete(id);
   const count = await Task.countDocuments({ completed: false });
   return count;
 };
