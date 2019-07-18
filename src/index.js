@@ -11,6 +11,7 @@ app.use(express.json());
 
 /// Users
 
+// Create new user
 app.post("/users", async (req, res) => {
   const user = new User(req.body);
  
@@ -22,6 +23,7 @@ app.post("/users", async (req, res) => {
   }
 });
 
+// Get single User by id
 app.get("/users/:id", async (req, res) => {
   const _id = req.params.id;
   
@@ -39,10 +41,10 @@ app.get("/users/:id", async (req, res) => {
 // Get all Users
 app.get("/users", async (req, res) => {
   try {
-    const users = await Users.find({});
+    const users = await User.find({});
     res.send(users);
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send(e);    
   }
 });
 
@@ -69,8 +71,23 @@ app.patch("/users/:id", async (req, res) => {
   }
 });
 
-///// Tasks
+// Delete User
+app.delete("/users/:id", async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
 
+    if (!user) {
+      res.status(404).send();
+    }
+    res.send(user);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
+///// Tasks ///////
+
+// Create new task
 app.post("/tasks", async (req, res) => {
   const task = new Task(req.body);
 
@@ -82,6 +99,7 @@ app.post("/tasks", async (req, res) => {
   }
 });
 
+// Get all tasks
 app.get("/tasks", async (req, res) => {
 
   try {
@@ -92,6 +110,7 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
+// Get single task by ID
 app.get("/tasks/:id", async (req, res) => {
   const _id = req.params.id;
 
@@ -106,6 +125,7 @@ app.get("/tasks/:id", async (req, res) => {
   }
 });
 
+// Update Task
 app.patch("/tasks/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = [ 'description', 'completed'];
@@ -121,6 +141,19 @@ app.patch("/tasks/:id", async (req, res) => {
       return res.status(404).send();
     }
     res.send(task);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
+// Delete Task
+app.delete("/tasks/:id", async (req, res) => {
+  try {
+    const user = await Task.findByIdAndDelete(req.params.id);
+    if(!user) {
+      res.status(404).send();
+    }
+    res.send(user);
   } catch (e) {
     res.status(500).send(e);
   }
