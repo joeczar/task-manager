@@ -69,7 +69,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
   if (!user) {
     throw new Error('Unable to log in.');
   }
-
+  
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
